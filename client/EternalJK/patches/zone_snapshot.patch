@@ -1,0 +1,190 @@
+diff --git a/codemp/qcommon/z_memman_pc.cpp b/codemp/qcommon/z_memman_pc.cpp
+index 25f92d4fa..2e3453c13 100644
+--- a/codemp/qcommon/z_memman_pc.cpp
++++ b/codemp/qcommon/z_memman_pc.cpp
+@@ -583,11 +583,112 @@ static void Z_Details_f(void)
+ 	Z_Stats_f();
+ }
+ 
++static int num_snapshots = 0;
++static void Z_SnapshotJson_f()
++{
++    char filename[MAX_QPATH];
++	char identifier[MAX_OSPATH];
++
++	if ( Cmd_Argc() != 2 ) {
++		Com_Printf ("zone_snapshot <identifier>\n");
++		return;
++	}
++
++	Q_strncpyz( identifier, Cmd_Argv(1), sizeof( identifier ) );
++
++    Com_sprintf(
++        filename,
++        sizeof(filename),
++        "snapshots/zone_%03d.json",
++        num_snapshots++
++    );
++
++    fileHandle_t f = FS_FOpenFileWrite(filename);
++
++    if (!f)
++    {
++        Com_Printf("^1Failed to open %s\n", filename);
++        return;
++    }
++
++    char buffer[2048];
++
++    Q_strncpyz(buffer, "{\n", sizeof(buffer));
++    FS_Write(buffer, strlen(buffer), f);
++
++    Com_sprintf(
++        buffer,
++        sizeof(buffer),
++        "\"identifier\": \"%s\", \n"
++        "\"totalBytes\": %d,\n"
++        "\"totalBlocks\": %d,\n"
++        "\"peakBytes\": %d,\n"
++        "\"tags\": [\n",
++		identifier,
++        TheZone.Stats.iCurrent,
++        TheZone.Stats.iCount,
++        TheZone.Stats.iPeak
++    );
++
++    FS_Write(buffer, strlen(buffer), f);
++
++    bool first = true;
++
++    for (int i = 0; i < TAG_COUNT; i++)
++    {
++        int count = TheZone.Stats.iCountsPerTag[i];
++        int size  = TheZone.Stats.iSizesPerTag[i];
++
++        if (!count)
++            continue;
++
++        if (!first)
++        {
++            Q_strncpyz(buffer, ",\n", sizeof(buffer));
++            FS_Write(buffer, strlen(buffer), f);
++        }
++
++        first = false;
++
++        float mb = (float)size / 1024.0f / 1024.0f;
++
++        Com_sprintf(
++            buffer,
++            sizeof(buffer),
++            "{"
++            "\"tag\":\"%s\","
++            "\"bytes\":%d,"
++            "\"mb\":%.2f,"
++            "\"blocks\":%d,"
++            "\"avg\":%d"
++            "}",
++            psTagStrings[i],
++            size,
++            mb,
++            count,
++            (count > 0) ? (size / count) : 0
++        );
++
++        FS_Write(buffer, strlen(buffer), f);
++    }
++
++    Q_strncpyz(buffer, "\n]\n}\n", sizeof(buffer));
++    FS_Write(buffer, strlen(buffer), f);
++
++    FS_FCloseFile(f);
++
++    Com_Printf(
++        "Dumped %s\n",
++        filename
++    );
++}
++
+ // Shuts down the zone memory system and frees up all memory
+ void Com_ShutdownZoneMemory(void)
+ {
+ //	Com_Printf("Shutting down zone memory .....\n");
+ 
++	Cmd_RemoveCommand("zone_snapshot");
+ 	Cmd_RemoveCommand("zone_stats");
+ 	Cmd_RemoveCommand("zone_details");
+ 
+@@ -609,6 +710,7 @@ void Com_InitZoneMemory( void )
+ 	TheZone.Header.iMagic = ZONE_MAGIC;
+ }
+ 
++
+ void Com_InitZoneMemoryVars( void ) {
+ 	//#ifdef _DEBUG
+ //	com_validateZone = Cvar_Get("com_validateZone", "1", 0);
+@@ -616,12 +718,14 @@ void Com_InitZoneMemoryVars( void ) {
+ 	com_validateZone = Cvar_Get("com_validateZone", "0", 0);
+ //#endif
+ 
++	Cmd_AddCommand("zone_snapshot", Z_SnapshotJson_f);
+ 	Cmd_AddCommand("zone_stats", Z_Stats_f, "Prints out zone memory stats" );
+ 	Cmd_AddCommand("zone_details", Z_Details_f, "Prints out full detailed zone memory info" );
+ 
+ #ifdef _DEBUG
+ 	Cmd_AddCommand("zone_memrecovertest", Z_MemRecoverTest_f);
+ #endif
++
+ }
+ 
+ 
+diff --git a/codemp/rd-vulkan/tr_init.cpp b/codemp/rd-vulkan/tr_init.cpp
+index 1bd152ef5..ff0a56297 100644
+--- a/codemp/rd-vulkan/tr_init.cpp
++++ b/codemp/rd-vulkan/tr_init.cpp
+@@ -1019,6 +1019,7 @@ R_Init
+ */
+ extern void R_InitWorldEffects( void ); //tr_WorldEffects.cpp
+ void R_Init( void ) {
++	ZONE_SNAPSHOT()
+ 	int i;
+ 	byte *ptr;
+ 
+@@ -1135,8 +1136,9 @@ RE_Shutdown
+ ===============
+ */
+ void RE_Shutdown( qboolean destroyWindow, qboolean restarting ) {
++	ZONE_SNAPSHOT()
+ 	vk_debug("RE_Shutdown( %i, %i )\n", destroyWindow, restarting);
+
+ 	for (size_t i = 0; i < numCommands; i++)
+ 		ri.Cmd_RemoveCommand(commands[i].cmd);
+ 
+diff --git a/codemp/rd-vulkan/tr_local.h b/codemp/rd-vulkan/tr_local.h
+index fe27c925f..cf6d83be7 100644
+--- a/codemp/rd-vulkan/tr_local.h
++++ b/codemp/rd-vulkan/tr_local.h
+@@ -2588,6 +2588,8 @@ void RB_DrawSurfaceSprites(const shaderStage_t *stage, const ss_input *input);
+ qboolean ShaderHashTableExists(void);
+ 
+ // Vulkan
++#define ZONE_SNAPSHOT() R_TakeZoneSnapshot( __func__ );
++void R_TakeZoneSnapshot( const char *name);
+ 
+ // shader
+ shader_t	*R_CreateShaderFromTextureBundle( const char *name, const textureBundle_t *bundle, uint32_t stateBits );
+diff --git a/codemp/rd-vulkan/vk_debug.cpp b/codemp/rd-vulkan/vk_debug.cpp
+index 021538a5f..3c91a3299 100644
+--- a/codemp/rd-vulkan/vk_debug.cpp
++++ b/codemp/rd-vulkan/vk_debug.cpp
+@@ -42,3 +42,10 @@ void vk_set_object_name( uint64_t obj, const char *objName, VkDebugReportObjectT
+ }
++void R_TakeZoneSnapshot( const char *name )
++{
++       char snapshot_cmd[MAX_QPATH];
++       ri.Printf( PRINT_WARNING, "- Take zone snapshot: %s\n", name );
+
++    Com_sprintf( snapshot_cmd, sizeof(snapshot_cmd), "zone_snapshot %s", name );
++       ri.Cmd_ExecuteString( snapshot_cmd );
++}
+ /*

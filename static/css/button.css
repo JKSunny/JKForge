@@ -1,0 +1,146 @@
+button {
+    padding: .6em 1.15em;
+    background: rgba(255,255,255,.03);
+    border: 1px solid var(--line);
+    color: var(--text);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+
+    button:hover {
+        transform: translateY(-1px);
+        background: rgba(255,255,255,.05);
+    }
+
+    button:disabled {
+        opacity: .55;
+        cursor: not-allowed;
+        transform: none !important;
+    }
+
+    button.small {
+        padding: 0.2em 0.4em;
+        font-size: 12px;
+    }
+
+    button.blue {
+        color: var(--blue);
+        border-color: rgba(78,161,255,.35);
+    }
+
+    button.orange {
+        color: #ff9b54;
+        border-color: rgba(255,155,84,.35);
+    }
+
+    button.git {
+        border-color: rgba(187,154,247,.35);
+        color: #c4b5fd;
+    }
+
+        button.git:hover {
+            background: rgba(187,154,247,.08);
+            border-color: #c4b5fd;
+            color: #ddd6fe;
+        }
+
+    button.build {
+        border-color: rgba(78,161,255,.35);
+        color: #6cb6ff;
+    }
+
+        button.build:hover {
+            background: rgba(78,161,255,.08);
+            border-color: #6cb6ff;
+        }
+
+    button.rebuild {
+        border-color: rgba(126,231,135,.35);
+        color: #7ee787;
+    }
+
+        button.rebuild:hover {
+            background: rgba(126,231,135,.08);
+            border-color: #7ee787;
+        }
+
+    button.red {
+        border-color: rgba(255,107,107,.35);
+        color: #ff7b72;
+    }
+
+        button.red:hover {
+            background: rgba(255,107,107,.08);
+            border-color: #ff7b72;
+            color: #ffb3ad;
+        }
+
+    button.rebuild {
+        border-color: rgba(126,231,135,.35);
+        color: #7ee787;
+    }
+
+        button.rebuild:hover {
+            background: rgba(126,231,135,.08);
+            border-color: #7ee787;
+        }
+
+    button.run {
+        border-color: rgba(88,166,255,.35);
+        color: #58a6ff;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 0 18px rgba(88,166,255,.10);
+    }
+
+        button.run::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient( 120deg, transparent 20%, rgba(88,166,255,.18) 50%, transparent 80% );
+            transform: translateX(-120%);
+            transition: transform .45s ease;
+        }
+
+        button.run:hover {
+            background: rgba(88,166,255,.10);
+            border-color: #58a6ff;
+            box-shadow: 0 0 22px rgba(88,166,255,.22), inset 0 0 12px rgba(88,166,255,.08);
+        }
+
+            button.run:hover::before {
+                transform: translateX(120%);
+            }
+
+        button.run i {
+            color: #79c0ff;
+        }
+
+    button.run-stop {
+        border-color: rgba(255,123,114,.28);
+        color: #ff7b72;
+        background: rgba(255,123,114,.04);
+    }
+
+        button.run-stop:hover {
+            background: rgba(255,123,114,.1);
+            border-color: #ff7b72;
+            box-shadow: 0 0 16px rgba(255,123,114,.12);
+        }
+
+    button.run-open {
+        border-color: rgba(121,192,255,.25);
+        color: #79c0ff;
+        background: rgba(121,192,255,.04);
+    }
+
+        button.run-open:hover {
+            background: rgba(121,192,255,.1);
+            border-color: #79c0ff;
+        }
+
+    button i {
+        margin-right: 6px;
+    }

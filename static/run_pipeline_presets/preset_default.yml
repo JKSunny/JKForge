@@ -1,0 +1,17 @@
+name: Default
+description: Boot only
+
+steps:
+  - id: boot
+    type: boot
+
+  - id: wait_10
+    type: sleep
+    input:
+      duration: 10
+
+  - id: load_map
+    type: command
+    input:
+      command: "map mp/duel1"
+    

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="UTF-8">
+<title>JK Forge</title>
+<link rel="icon" href="{{ url_for('static', filename='icon.ico') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+<script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/uplot/dist/uPlot.min.css">
+<script src="https://unpkg.com/uplot/dist/uPlot.iife.min.js"></script>
+</head>
+<body>
+    {% include "partials/modal/environment_details.html" %}
+    {% include "partials/modal/run.html" %}
+    {% include "partials/modal/environment_add.html" %}
+    {% include "partials/modal/run_command.html" %}
+    {% include "partials/modal/run_zone_snapshots.html" %}
+    {% include "partials/modal/run_fps_snapshots.html" %}
+
+    <div id="app">
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <div>
+                    <div class="sidebar-label">JK Forge</div>
+                    <h1>Environments</h1>
+                </div>
+                <button class="orange" onclick="open_config()">
+                    <i class="fa-solid fa-cogs"></i>
+                </button>
+                <button class="blue" onclick="openEnvironmentAddModal()">
+                    <i class="fa-solid fa-plus"></i> Add
+                </button>
+            </div>
+
+            <div id="environment_list"></div>
+        </aside>
+
+        <main id="run_details">
+            <div class="empty-state">
+                <i class="fa-solid fa-play"></i>
+                <h2>Select a run</h2>
+                <p>Choose a run from the left sidebar to inspect details.</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+    window.APP_CONFIG = {{ config | tojson }};
+    console.log(window.APP_CONFIG);
+    </script>
+    {% include "partials/scripts.html" %}
+</body>
+</html>

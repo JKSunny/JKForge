@@ -1,0 +1,20 @@
+{
+    "executable": "eternaljk.x86.exe",
+    "base_id": 0,
+    "renderer": "rd-vulkan",
+    "fs_game": "EternalJK",
+    "custom": "",
+    "developer": false,
+    "windowed": true,
+    "resolution": "360p",
+    "pipeline_preset": "preset_demo_queue",
+    "cvars": {
+        "r_ext_compress_textures": true,
+        "r_DynamicGlow": true,
+        "r_vbo": true,
+        "r_vbo_models": false,
+        "r_surfaceSprites": true,
+        "cg_drawFPS": true,
+        "r_flares": true
+    }
+}

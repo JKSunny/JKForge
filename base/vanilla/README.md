@@ -1,0 +1,1 @@
+# Vanlla base folder, copy game assets and demos folder here

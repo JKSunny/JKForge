@@ -1,0 +1,41 @@
+diff --git a/shared/sys/sys_main.cpp b/shared/sys/sys_main.cpp
+index 0d77a1330..c0dabe424 100644
+--- a/shared/sys/sys_main.cpp
++++ b/shared/sys/sys_main.cpp
+@@ -690,6 +690,25 @@ char *Sys_StripAppBundle( char *dir )
+ #	endif
+ #endif
+ 
++void JKForge_PollCommands()
++{
++	FILE* f = fopen("jkforge_cmd.txt", "r");
++
++	if (!f)
++		return;
++
++	char cmd[1024];
++
++	while (fgets(cmd, sizeof(cmd), f))
++	{
++		Cbuf_ExecuteText( EXEC_APPEND, cmd );
++	}
++
++	fclose(f);
++	remove("jkforge_cmd.txt");
++}
++
++
+ int main ( int argc, char* argv[] )
+ {
+ 	int		i;
+@@ -768,6 +787,9 @@ int main ( int argc, char* argv[] )
+ 			}
+ 		}
+ 
++		//jkforge, id like to eventually use hooks
++		JKForge_PollCommands();
++
+ 		// run the game
+ 		Com_Frame();
+ 	}
+

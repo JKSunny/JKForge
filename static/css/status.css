@@ -1,0 +1,186 @@
+/* run overview */
+.status-icon {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    font-size: 11px;
+    flex-shrink: 0;
+    transition: background .14s ease, color .14s ease, border-color .14s ease;
+}
+
+.status-icon > i {
+    margin: 0 !important;
+}
+
+.run-status-card {
+    transition:
+        background .15s ease,
+        border-color .15s ease,
+        color .15s ease;
+}
+
+    .run-status-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 8px;
+    }
+
+    .run-status-card.status-running {
+        background: var(--status-running-bg);
+        border-color: var(--status-running-border);
+    }
+
+    .run-status-card.status-success {
+        background: var(--status-success-bg);
+        border-color: var(--status-success-border);
+    }
+
+    .run-status-card.status-failed {
+        background: var(--status-failed-bg);
+        border-color: var(--status-failed-border);
+    }
+
+    .run-status-card.status-unknown {
+        background: var(--status-unknown-bg);
+        border-color: var(--status-unknown-border);
+    }
+
+.status-running {
+    color: var(--status-running);
+    background: var(--status-running-bg);
+    border: 1px solid var(--status-running-border);
+    box-shadow: 0 0 12px var(--status-running-shadow);
+}
+
+.status-success {
+    color: var(--status-success);
+    background: var(--status-success-bg);
+    border: 1px solid var(--status-success-border);
+    box-shadow: 0 0 12px var(--status-success-shadow);
+}
+
+.status-failed {
+    color: var(--status-failed);
+    background: var(--status-failed-bg);
+    border: 1px solid var(--status-failed-border);
+    box-shadow: 0 0 12px var(--status-failed-shadow);
+}
+
+.status-unknown {
+    color: var(--status-unknown);
+    background: var(--status-unknown-bg);
+    border: 1px solid var(--status-unknown-border);
+}
+
+/* run pipeline */
+.run-pipeline .pipeline-finished {
+    background: var(--status-success-bg);
+    color: var(--status-success);
+}
+
+.run-pipeline .pipeline-running {
+    background: var(--status-running-bg);
+    color: var(--status-running);
+}
+
+.run-pipeline .pipeline-failed {
+    background: var(--status-failed-bg);
+    color: var(--status-failed);
+}
+
+.run-pipeline .pipeline-pending {
+    background: var(--status-unknown-bg);
+    color: var(--status-unknown);
+}
+
+/* env pipeline */
+.env-pipeline-icon {
+    width: 14px;
+    display: flex;
+    justify-content: center;
+}
+
+.status-0 {
+    color: var(--status-running);
+}
+
+.status-1 {
+    color: var(--status-success);
+}
+
+.status-2 {
+    color: var(--status-failed);
+}
+
+.status-3 {
+    color: var(--status-info);
+}
+
+.pipeline-step.status-0 .pipeline-icon {
+    color: var(--status-running);
+}
+
+.pipeline-step.status-1 .pipeline-icon {
+    color: var(--status-success);
+}
+
+.pipeline-step.status-2 .pipeline-icon {
+    color: var(--status-failed);
+}
+
+.pipeline-step.status-3 .pipeline-icon {
+    color: var(--status-info);
+}
+
+.pipeline-step.status--1 {
+    opacity: .55;
+}
+
+
+/* env sidebar */
+.environment-item-header .status {
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    font-size: 11px;
+    flex-shrink: 0;
+    transition: background .14s ease, color .14s ease, border-color .14s ease, box-shadow .14s ease;
+}
+
+    .environment-item-header .status i {
+        margin: 0;
+    }
+
+    .environment-item-header .status.running {
+        color: var(--status-running);
+        background: var(--status-running-bg);
+        border: 1px solid var(--status-running-border);
+        box-shadow: 0 0 12px var(--status-running-shadow);
+    }
+
+    .environment-item-header .status.success {
+        color: var(--status-success);
+        background: var(--status-success-bg);
+        border: 1px solid var(--status-success-border);
+        box-shadow: 0 0 12px var(--status-success-shadow);
+    }
+
+    .environment-item-header .status.failed {
+        color: var(--status-failed);
+        background: var(--status-failed-bg);
+        border: 1px solid var(--status-failed-border);
+        box-shadow: 0 0 12px var(--status-failed-shadow);
+    }
+
+    .environment-item-header .status.idle {
+        color: var(--status-unknown);
+        background: var(--status-unknown-bg);
+        border: 1px solid var(--status-unknown-border);
+    }

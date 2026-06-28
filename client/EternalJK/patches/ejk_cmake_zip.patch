@@ -1,0 +1,81 @@
+diff --git a/cmake/Modules/InstallZIP.cmake b/cmake/Modules/InstallZIP.cmake
+index 9c2b2c9aa..8e0e1bcdd 100644
+--- a/cmake/Modules/InstallZIP.cmake
++++ b/cmake/Modules/InstallZIP.cmake
+@@ -94,11 +94,54 @@ endif()
+ function(add_zip_command output)
+   set(MultiValueArgs FILES DEPENDS)
+   cmake_parse_arguments(ARGS "" "" "${MultiValueArgs}" ${ARGN})
+-  
+-  set(ZipCommand ${ZIP_COMMAND})
+-  string(REPLACE <ARCHIVE> "${output}" ZipCommand "${ZipCommand}")
+-  string(REPLACE <FILES> "${ARGS_FILES}" ZipCommand "${ZipCommand}")
+-  add_custom_command(OUTPUT ${output}
+-    COMMAND ${ZipCommand}
+-    DEPENDS ${ARGS_DEPENDS})
+-endfunction(add_zip_command)
++
++  get_filename_component(
++    OutputAbs
++    "${output}"
++    ABSOLUTE
++    BASE_DIR "${CMAKE_CURRENT_BINARY_DIR}"
++  )
++
++  # single directory input
++  if(ARGC EQUAL 1)
++    message(FATAL_ERROR "No FILES specified")
++  endif()
++
++  list(LENGTH ARGS_FILES FileCount)
++
++  # directory mode
++  if(FileCount EQUAL 1 AND IS_DIRECTORY "${ARGS_FILES}")
++
++    set(SourceDir "${ARGS_FILES}")
++
++    add_custom_command(
++      OUTPUT "${output}"
++      COMMAND ${CMAKE_COMMAND} -E tar cf "${OutputAbs}" --format=zip .
++      WORKING_DIRECTORY "${SourceDir}"
++      DEPENDS ${ARGS_DEPENDS}
++      VERBATIM
++    )
++
++  # file list mode
++  else()
++
++    list(GET ARGS_FILES 0 FirstFile)
++    get_filename_component(WorkingDir "${FirstFile}" DIRECTORY)
++
++    set(RelFiles)
++
++    foreach(f ${ARGS_FILES})
++      file(RELATIVE_PATH RelPath "${WorkingDir}" "${f}")
++      list(APPEND RelFiles "${RelPath}")
++    endforeach()
++
++    add_custom_command(
++      OUTPUT "${output}"
++      COMMAND ${CMAKE_COMMAND} -E tar cf "${OutputAbs}" --format=zip ${RelFiles}
++      WORKING_DIRECTORY "${WorkingDir}"
++      DEPENDS ${ARGS_DEPENDS}
++      VERBATIM
++    )
++
++  endif()
++endfunction()
+\ No newline at end of file
+diff --git a/codemp/CMakeLists.txt b/codemp/CMakeLists.txt
+index 7a114de16..4a06c47c7 100644
+--- a/codemp/CMakeLists.txt
++++ b/codemp/CMakeLists.txt
+@@ -779,7 +779,7 @@ set(GameLibFullPaths)
+ endif()
+ 
+ add_zip_command(japro-assets.pk3
+-	FILES ${CMAKE_SOURCE_DIR}/assets/japro/*)
++    FILES ${CMAKE_SOURCE_DIR}/assets/japro)
+ add_custom_target(Assets
+ 	ALL
+ 	DEPENDS japro-assets.pk3)

@@ -1,0 +1,19 @@
+name: Demo
+description: Play demos pipeline
+
+steps:
+  - id: boot
+    type: boot
+
+  - id: wait_10
+    type: sleep
+    input:
+      duration: 10
+
+  - id: run_demos
+    type: demo_queue
+    input:
+      repeat: 2
+
+  - id: quit
+    type: exit

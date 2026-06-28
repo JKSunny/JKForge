@@ -1,0 +1,175 @@
+<div id="runModal" class="modal hidden">
+    <div class="modal-content environment-modal">
+
+        <div class="modal-header">
+            <div class="modal-header-left">
+                <div>
+                    <h2>Launch Run</h2>
+
+                    <div class="modal-subtitle">
+                        Configure runtime, renderer and general settings
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-header-right">
+                <div class="header-preset-picker">
+                    <i class="fa-solid fa-sliders"></i>
+
+                    <select id="runPreset"
+                            class="setting-select">
+                    </select>
+                    <button onclick="setDefaultEnvPreset()">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Set default preset for this environment
+                    </button>
+                </div>
+
+                <button class="modal-close"
+                        onclick="closeRunModal()">
+                    &times;
+                </button>
+            </div>
+        </div>
+
+        <div class="modal-body">
+
+            <input id="runEnvironment" type="hidden">
+
+            <div class="run-modal-section pipeline-section">
+                <div class="run-modal-section-title">
+                    Pipeline
+                </div>
+
+                <select id="runPipelinePreset"
+                        class="setting-select">
+                </select>
+
+                <div id="runPipelinePreview"></div>
+            </div>
+
+            <div class="log-output"
+                 id="runCommandPreview">
+            </div>
+
+            <!-- runtime -->
+            <div class="run-modal-section full-width">
+                <div class="run-modal-section-title">
+                    Runtime
+                </div>
+
+                <div class="run-settings-grid">
+                    <label>
+                        Executable
+                        <select id="runExecutable"></select>
+                    </label>
+
+                    <label>
+                        Renderer
+                        <select id="runRenderer"></select>
+                    </label>
+
+                    <label>
+                        Resolution
+                        <select id="runResolution"></select>
+                    </label>
+
+                    <label>
+                        Base Folder
+                        <select id="baseLocation"></select>
+                    </label>
+
+                    <label>
+                        fs_game
+                        <input id="runFsGame" type="text">
+                    </label>
+
+                    <label class="setting-row">
+                        <span class="setting-label">
+                            Windowed
+                        </span>
+
+                        <span class="config-toggle">
+
+                            <input id="runWindowed"
+                                   type="checkbox"
+                                   checked>
+
+                            <span class="config-toggle-slider"></span>
+
+                        </span>
+                    </label>
+
+                    <label class="full-width">
+                        Additional Args
+                        <input id="runCustomArgs" type="text">
+                    </label>
+                </div>
+            </div>
+
+            <!-- cvars -->
+            <div class="run-modal-section full-width">
+                <div class="run-modal-section-title">
+                    Cvars
+                </div>
+
+                <div class="setting-grid"
+                     id="cvarGrid">
+                </div>
+            </div>
+
+            <!-- developer -->
+            <div class="run-modal-section">
+                <div class="run-modal-section-title">
+                    Debug
+                </div>
+
+                <label class="setting-row setting-row-accent">
+                    <div class="setting-info">
+                        <div class="setting-title">
+                            <i class="fa-solid fa-bug"></i>
+                            Developer Mode
+                        </div>
+
+                        <div class="setting-description">
+                            Enables developer 1 and additional logging
+                        </div>
+                    </div>
+
+                    <span class="config-toggle">
+                        <input id="runDeveloper"
+                               type="checkbox">
+
+                        <span class="config-toggle-slider"></span>
+                    </span>
+                </label>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <div class="modal-footer-left">
+                <button onclick="saveRunPreset(false)">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save
+                </button>
+
+                <button onclick="saveRunPreset(true)">
+                    <i class="fa-solid fa-plus"></i>
+                    Save As
+                </button>
+            </div>
+
+            <div class="modal-footer-right">
+                <button onclick="closeRunModal()">
+                    Cancel
+                </button>
+
+                <button class="blue"
+                        onclick="submitRun()">
+                    Launch
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

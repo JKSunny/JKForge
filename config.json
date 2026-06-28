@@ -1,0 +1,18 @@
+{
+    "http_port": 5000,
+    "http_use_socketio": true,
+    "base_locations": [
+        {
+            "id": "Base Vanilla",
+            "path": "D:\\Github-workspace\\JKForge\\base\\vanilla"
+        },
+        {
+            "id": "Base Modded",
+            "path": "D:\\Github-workspace\\JKForge\\base\\modded"
+        }
+    ],
+    "default_run_preset": "playmap",
+    "qconsole_colors": false,
+    "qconsole_strip_colors": true,
+    "default_generator": "vs2022"
+}

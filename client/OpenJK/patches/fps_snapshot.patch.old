@@ -1,0 +1,208 @@
+diff --git a/codemp/cgame/cg_draw.c b/codemp/cgame/cg_draw.c
+index 582b1170a..cdddd083d 100644
+--- a/codemp/cgame/cg_draw.c
++++ b/codemp/cgame/cg_draw.c
+@@ -31,6 +31,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
+ #include "ui/ui_shared.h"
+ #include "ui/ui_public.h"
+ 
++
+ extern float CG_RadiusForCent( centity_t *cent );
+ qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, float *x, float *y);
+ qboolean CG_CalcMuzzlePoint( int entityNum, vec3_t muzzle );
+@@ -5191,6 +5192,7 @@ CG_DrawFPS
+ */
+ #define	FPS_FRAMES	60 //increased from 16 for accuracy
+ static float CG_DrawFPS( float y ) {
++	//
+ 	char		*s;
+ 	static unsigned short previousTimes[FPS_FRAMES], index;
+ 	static int	previous;
+@@ -5215,6 +5217,7 @@ static float CG_DrawFPS( float y ) {
+ 		total = 1;
+ 	}
+ 	fps = 1000 * FPS_FRAMES / total;
++	CG_Benchmark_AddFrame(fps);
+ 
+ 	s = va( "%ifps", fps );
+ 
+@@ -11913,3 +11916,115 @@ static void CG_DrawTrajectoryLine(void) {
+ 		VectorCopy(newPos, oldPos);
+ 	}
+ }
++
++benchmarkSession_t cgBenchmark;
++
++void CG_Benchmark_Clear(void)
++{
++    if (cgBenchmark.frames)
++    {
++        free(cgBenchmark.frames);
++        cgBenchmark.frames = NULL;
++    }
++
++    Com_Memset(&cgBenchmark, 0, sizeof(cgBenchmark));
++}
++
++void CG_Benchmark_Begin(const char *identifier)
++{
++    CG_Benchmark_Clear();
++
++    cgBenchmark.active = qtrue;
++
++    Q_strncpyz( cgBenchmark.identifier, identifier ? identifier : "unknown", sizeof(cgBenchmark.identifier) );
++
++    cgBenchmark.startTime = trap->Milliseconds();
++    cgBenchmark.frames = (benchmarkFrame_t *) malloc( sizeof(benchmarkFrame_t) * BENCHMARK_MAX_FRAMES );
++
++    if (!cgBenchmark.frames)
++    {
++        Com_Printf("^1CG_Benchmark_Begin: malloc failed\n");
++
++        CG_Benchmark_Clear();
++        return;
++    }
++
++    Com_Memset( cgBenchmark.frames, 0, sizeof(benchmarkFrame_t) * BENCHMARK_MAX_FRAMES );
++    Com_Printf( "^2CG_Benchmark_Begin: %s\n", cgBenchmark.identifier );
++}
++
++void CG_Benchmark_AddFrame(int frameTime)
++{
++    if (!cgBenchmark.active)
++        return;
++
++    if (!cgBenchmark.frames)
++        return;
++
++    if (cgBenchmark.frameCount >= BENCHMARK_MAX_FRAMES)
++        return;
++
++	if (frameTime < 5)
++		return;
++
++    cgBenchmark.frames[
++        cgBenchmark.frameCount
++    ].frameTime = (unsigned short)frameTime;
++
++    cgBenchmark.frameCount++;
++}
++
++void CG_Benchmark_Flush(void)
++{
++    char filename[MAX_QPATH];
++	time_t rawtime;
++	char timeStr[32] = {0}; // should really only reach ~19 chars
++
++	time( &rawtime );
++	strftime( timeStr, sizeof( timeStr ), "%Y-%m-%d_%H-%M-%S", localtime( &rawtime ) ); // or gmtime
++
++    Com_sprintf( filename, sizeof(filename), "snapshots/fps_%s.json", timeStr );
++
++    fileHandle_t *f;
++	trap->FS_Open(filename, &f, FS_WRITE);
++
++    if (!f)
++    {
++        Com_Printf( "^1Failed to open %s\n", filename );
++
++        return;
++    }
++
++    char buffer[4096];
++
++	Com_sprintf(
++		buffer,
++		sizeof(buffer),
++		"{\n"
++		"  \"identifier\":\"%s\",\n"
++		"  \"startTime\":%d,\n"
++		"  \"endTime\":%d,\n"
++		"  \"frameCount\":%d,\n"
++		"  \"frames\":[\n",
++		cgBenchmark.identifier,
++		cgBenchmark.startTime,
++		cgBenchmark.endTime,
++		cgBenchmark.frameCount
++	);
++
++    trap->FS_Write( buffer, strlen(buffer), f );
++
++    for (int i = 0; i < cgBenchmark.frameCount; i++)
++    {
++        Com_sprintf( buffer, sizeof(buffer), "%u%s\n", cgBenchmark.frames[i].frameTime, (i < cgBenchmark.frameCount - 1) ? "," : "" );
++
++        trap->FS_Write( buffer, strlen(buffer), f );
++    }
++
++    Q_strncpyz( buffer, "]\n}\n", sizeof(buffer));
++    trap->FS_Write( buffer, strlen(buffer), f );
++
++    trap->FS_Close(f);
++
++    Com_Printf( "^2Benchmark written: %s\n", filename );
++}
+\ No newline at end of file
+diff --git a/codemp/cgame/cg_local.h b/codemp/cgame/cg_local.h
+index a6e64dce0..418662969 100644
+--- a/codemp/cgame/cg_local.h
++++ b/codemp/cgame/cg_local.h
+@@ -2585,3 +2585,35 @@ Ghoul2 Insert End
+ */
+ 
+ extern cgameImport_t *trap;
++
++//
++// Benchmark
++//
++#define BENCHMARK_MAX_FRAMES 1048576
++
++typedef struct benchmarkFrame_s
++{
++    unsigned short frameTime;
++
++} benchmarkFrame_t;
++
++typedef struct benchmarkSession_s
++{
++    qboolean active;
++
++    char identifier[64];
++
++    int startTime;
++    int endTime;
++
++    int frameCount;
++
++    benchmarkFrame_t *frames;
++
++} benchmarkSession_t;
++
++extern benchmarkSession_t cgBenchmark;
++void CG_Benchmark_Begin(const char *identifier);
++void CG_Benchmark_AddFrame(int frameTime);
++void CG_Benchmark_Flush(void);
++void CG_Benchmark_Clear(void);
+\ No newline at end of file
+diff --git a/codemp/cgame/cg_main.c b/codemp/cgame/cg_main.c
+index 4c1d59284..ac458e111 100644
+--- a/codemp/cgame/cg_main.c
++++ b/codemp/cgame/cg_main.c
+@@ -2845,6 +2845,7 @@ Ghoul2 Insert End
+ 
+ 	//Load emojis
+ 	CG_LoadEmojis();
++	CG_Benchmark_Begin("CG_Init");
+ 
+ 	//Load sabers.cfg data
+ 	WP_SaberLoadParms();
+@@ -3149,6 +3150,9 @@ Called before every level change or subsystem restart
+ */
+ void CG_Shutdown( void )
+ {
++	CG_Benchmark_Flush();
++	CG_Benchmark_Clear();
++
+ 	BG_ClearAnimsets(); //free all dynamic allocations made through the engine
+ 
+     CG_DestroyAllGhoul2();

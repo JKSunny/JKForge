@@ -1,0 +1,36 @@
+<div id="commandModal" class="modal hidden">
+    <div class="modal-content" style="max-width:520px;">
+
+        <div class="modal-header">
+            <h2>Send Command</h2>
+
+            <button class="modal-close" onclick="closeCommandModal()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+
+            <input id="commandInput" type="text" placeholder="map mp/duel1" autocomplete="off">
+
+            <div class="log-output">
+                Command will be injected into the running game console.
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <div></div>
+
+            <div class="modal-actions">
+                <button onclick="closeCommandModal()">Cancel</button>
+
+                <button class="blue" onclick="submitCommand()">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Send
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</div>

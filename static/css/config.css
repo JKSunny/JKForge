@@ -1,0 +1,370 @@
+.config-page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.config-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+    .config-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+.config-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--config-title);
+}
+
+.config-subtitle {
+    margin-top: 4px;
+    color: var(--config-subtitle);
+    font-size: 14px;
+}
+
+.config-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.config-setting {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px;
+    background: var(--config-card-bg);
+    border: 1px solid var(--config-card-border);
+    border-radius: var(--config-card-radius);
+}
+
+.config-setting-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--config-setting-title);
+}
+
+.config-setting-description {
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--config-setting-description);
+}
+
+.config-setting-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.config-setting-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.config-setting-status {
+    width: var(--config-status-size);
+    height: var(--config-status-size);
+    border-radius: var(--config-status-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid var(--config-status-border);
+}
+
+    .config-setting-status.valid {
+        color: var(--config-valid);
+        background: var(--config-valid-bg);
+        border-color: var(--config-valid-border);
+    }
+
+    .config-setting-status.invalid {
+        color: var(--config-warning);
+        background: var(--config-warning-bg);
+        border-color: var(--config-warning-border);
+    }
+
+.config-setting-valid-path,
+.config-setting-fallback {
+    font-size: 12px;
+    color: var(--config-path-text);
+}
+
+    .config-setting-valid-path span,
+    .config-setting-fallback span {
+        color: var(--config-path-value);
+        font-family: var(--config-code-font);
+    }
+
+    .config-setting-fallback span {
+        color: var(--config-fallback-value);
+    }
+
+
+.config-toggle {
+    position: relative;
+    width: var(--config-toggle-width);
+    height: var(--config-toggle-height);
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+    .config-toggle input {
+        display: none;
+    }
+
+.config-toggle-slider {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: var(--config-toggle-bg);
+    border: 1px solid var(--config-toggle-border);
+    transition: background .15s ease, border-color .15s ease;
+}
+
+    .config-toggle-slider::before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: var(--config-toggle-knob-size);
+        height: var(--config-toggle-knob-size);
+        border-radius: 50%;
+        background: var(--config-toggle-knob-bg);
+        transition: transform .15s ease;
+    }
+
+.config-toggle input:checked + .config-toggle-slider {
+    background: var(--config-toggle-active-bg);
+    border-color: var(--config-toggle-active-border);
+}
+
+    .config-toggle input:checked + .config-toggle-slider::before {
+        transform: translateX(20px);
+        background: var(--config-toggle-active-knob);
+    }
+
+
+/* base locations */
+.config-setting-group {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.config-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+    .config-group-header button {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+.config-base-location {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--config-base-radius);
+    background: var(--config-base-bg);
+    transition: border-color .14s ease, background .14s ease;
+}
+
+    .config-base-location:hover {
+        border-color: var(--config-base-border-hover);
+        background: var(--config-base-bg-hover);
+    }
+
+.config-base-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+    .config-base-header button i {
+        margin: 0;
+    }
+    .config-base-header input {
+        flex: 1;
+    }
+
+    .config-base-header .danger {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        color: var(--status-failed);
+        border: 1px solid var(--status-failed-border);
+        background: var(--status-failed-bg);
+    }
+
+        .config-base-header .danger:hover {
+            background: var(--config-danger-hover-bg);
+        }
+
+.config-setting-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+    .config-setting-input-row input {
+        flex: 1;
+    }
+
+.config-setting-status {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+    .config-setting-status.valid {
+        color: var(--status-success);
+        background: var(--status-success-bg);
+        border: 1px solid var(--status-success-border);
+    }
+
+    .config-setting-status.invalid {
+        color: var(--status-failed);
+        background: var(--status-failed-bg);
+        border: 1px solid var(--status-failed-border);
+    }
+
+.config-setting-valid-path,
+.config-setting-fallback {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.config-setting-valid-path {
+    color: var(--status-success);
+}
+
+.config-setting-fallback {
+    color: var(--status-failed);
+}
+
+    .config-setting-valid-path span,
+    .config-setting-fallback span {
+        display: block;
+        margin-top: 2px;
+        color: var(--text-secondary);
+        word-break: break-all;
+        font-family: var(--config-code-font);
+    }
+
+/* theme toggle */
+.config-theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 110px;
+    padding: .6em 1.15em;
+    border-radius: 12px;
+    border: 1px solid var(--config-card-border);
+    background: var(--config-card-bg);
+    color: var(--config-title);
+    transition: all .15s ease;
+}
+
+    .config-theme-toggle:hover {
+        border-color: var(--run-accent-border);
+        color: var(--run-accent);
+    }
+
+.config-theme-label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* toolchain */
+.config-toolchain-card {
+    padding: 20px;
+    border-radius: 16px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+}
+
+.config-toolchain-tools {
+    max-width:200px;
+    margin-top: 16px;
+    margin-bottom: 20px;
+}
+
+.config-tool-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--surface-2);
+}
+
+.config-tool-valid {
+    color: var(--success);
+}
+
+.config-tool-invalid {
+    color: var(--danger);
+}
+
+.config-toolchain-subtitle {
+    margin-bottom: 10px;
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+}
+
+.config-generator-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+.config-generator-info {
+    display: inline-flex;
+    gap: 10px;
+    align-items: anchor-center;
+}
+.config-generator-name {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.config-generator-id {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.config-generator-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

@@ -1,0 +1,35 @@
+<div id="runZoneSnapshotsModal" class="modal hidden">
+    <div class="modal-content run-zone-snapshots-modal">
+
+        <div class="modal-header">
+            <h2>Zone Memory</h2>
+
+            <button class="modal-close" onclick="closeRunZoneSnapshotsModal()">&times;</button>
+        </div>
+
+        <div class="zone-memory-toolbar">
+
+            <button onclick="set_zone_view(1)">
+                Heatmap
+            </button>
+
+            <button onclick="set_zone_view(2)">
+                Timeline
+            </button>
+
+            <button onclick="set_zone_view(3)">
+                Stacked
+            </button>
+
+            <button onclick="set_zone_view(4)">
+                Chart
+            </button>
+        </div>
+
+        <div class="run-panel">
+            <div id="zone_memory" class="memory-timeline-heatmap"></div>
+            <div id="zone_memory_legend"></div>
+        </div>
+
+    </div>
+</div>

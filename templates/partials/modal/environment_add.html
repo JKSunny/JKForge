@@ -1,0 +1,79 @@
+<div id="environmentAddModal" class="modal hidden">
+    <div class="modal-content environment-modal">
+
+        <div class="modal-header">
+            <h2>Start Environment</h2>
+
+            <button class="modal-close" onclick="closeEnvironmentAddModal()" aria-label="Close">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="form-row">
+                <label>
+                    Client
+                    <select id="environmentClient"></select>
+                </label>
+            </div>
+
+            <div class="form-row">
+                <label>
+                    Repository
+                    <input id="environmentGit" type="text" value="JKSunny/EternalJK" placeholder="owner/repo">
+                </label>
+
+                <label>
+                    Branch
+                    <input id="environmentBranch" type="text" value="master" placeholder="master">
+                </label>
+            </div>
+
+            <div class="form-row">
+                <label>
+                    Commit
+                    <input id="environmentCommit" type="text" placeholder="latest">
+                </label>
+
+                <label>
+                    Build Type
+                    <select id="environmentType">
+                        <option value="Release">Release</option>
+                        <option value="Debug">Debug</option>
+                    </select>
+                </label>
+            </div>
+
+            <div id="environmentAdvanced" class="environment-advanced">
+                <div class="form-row">
+                    <label>
+                        Architecture
+                        <select id="environmentArch">
+                            <option value="x86">x86</option>
+                            <option value="x64">x64</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Generator
+                        <select id="environmentGenerator"></select>
+                    </label>
+                </div>
+
+                <div class="form-row">
+                    <label>
+                        CMake Options
+                        <input id="environmentCMakeOptions" type="text" placeholder="-DBuildTests=ON">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button onclick="closeEnvironmentAddModal()">Cancel</button>
+
+            <div class="modal-actions">
+                <button class="environment-advanced-toggle" onclick="toggleAdvancedEnvironment()">Advanced</button>
+                <button class="blue" onclick="create_environment()">Start</button>
+            </div>
+        </div>
+    </div>
+</div>

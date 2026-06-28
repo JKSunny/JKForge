@@ -1,0 +1,14 @@
+name: Exit test
+description: Play demos pipeline
+
+steps:
+  - id: boot
+    type: boot
+
+  - id: wait_15
+    type: sleep
+    input:
+      duration: 15
+
+  - id: quit
+    type: exit

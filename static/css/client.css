@@ -1,0 +1,17 @@
+.client-badge.badge-eternaljk {
+    background: linear-gradient(284deg, rgb(116 153 68 / 18%), rgb(239 219 170 / 50%));  
+}
+
+.client-badge.badge-openjk {
+    background: linear-gradient(284deg, rgba(112, 68, 153, 0.18), rgba(170, 217, 239, 0.5));  
+}
+
+#sidebar .client-group.badge-eternaljk .client-group-header {
+    background: linear-gradient(284deg, rgb(116 153 68 / 5%), rgb(239 219 170 / 50%));
+    border: 1px solid rgb(239 219 170 / 15%);
+}
+
+#sidebar .client-group.badge-openjk .client-group-header {
+    background: linear-gradient( 284deg, rgb(112 68 153 / 5%), rgb(170 217 239 / 50%));
+    border: 1px solid rgb(170 217 239 / 15%);
+}
