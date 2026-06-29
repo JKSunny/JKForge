@@ -31,7 +31,7 @@ steps:
     type: exit
 ```
 
-Currently just a handfull of types are supported ```boot, quit, sleep, command and run_demos``` \
+Currently just a handfull of types are supported ```boot, exit, sleep, command and demo_queue``` \
 These can be extended in ```modules/run_pipeline_steps``` and registered in ```modules/run_pipeline.py::__init__::step_types```
 
 > **NOTE:** This was not originally intended to be a public project, but it may still be of value to someone. \
