@@ -26,6 +26,10 @@ steps:
     type: demo_queue
     input:
       repeat: 2
+# handpicked. remove 'demo' arg to play all
+      demos:
+        - demo001.dm_26
+        - demo002.dm_26
 
   - id: quit
     type: exit

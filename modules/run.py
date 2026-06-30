@@ -193,7 +193,11 @@ class Run:
                     "steps": [
                         {
                             "id": step.get("id", ""),
-                            "type": step.get("type", "")
+                            "type": step.get("type", ""),
+                            "input": {
+                                **step.get("input", {}),
+                                "demos": step.get("input", {}).get("demos", "all")
+                            }
                         }
                         for step in steps
                     ]

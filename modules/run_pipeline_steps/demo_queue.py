@@ -19,19 +19,37 @@ class DemoQueueStep(RunPipelineStep):
     def start(self):
         input_data = self.step_data.get("input", {})
         self.repeat = int( input_data.get("repeat", 0) )
+        requested_demos = input_data.get("demos")
 
         metadata = self.metadata()
 
         launcher = metadata["launcher"]
-
+   
+        # get launcher info
         #fs_basegame = launcher["fs_basegame"]
+        # look for demos in base folder, not in mod folder.
         fs_basegame = "base"
+
         run_dir = self.run_dir()
         demos_dir = ( run_dir / fs_basegame / "demos" )
 
-        self.demo_files = sorted(
-            demos_dir.glob("*.dm_26")
-        )
+        # create list of demos
+        if requested_demos:
+            self.demo_files = []
+
+            for demo in requested_demos:
+                demo = demo if demo.endswith(".dm_26") else f"{demo}.dm_26"
+                demo_path = demos_dir / demo
+
+                if not demo_path.is_file():
+                    return {
+                        "success": False,
+                        "error": f"Demo not found: {demo}"
+                    }
+
+                self.demo_files.append(demo_path)
+        else:
+            self.demo_files = sorted(demos_dir.glob("*.dm_26"))
 
         if not self.demo_files:
             return {
@@ -43,7 +61,6 @@ class DemoQueueStep(RunPipelineStep):
             f"[{self.run_id}] loaded "
             f"{len(self.demo_files)} demos"
         )
-
 
         # metadata
         step = self.step()

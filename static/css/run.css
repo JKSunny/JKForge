@@ -435,6 +435,57 @@
         word-break: break-word;
     }
 
+.pipeline-preview-info {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 6px;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.pipeline-preview-popup {
+    position: absolute;
+    top: 120%;
+    left: 0;
+    min-width: 240px;
+    max-width: 360px;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px;
+    color: var(--run-text-code);
+    background: var(--run-bg-code);
+    border: 1px solid var(--run-border-code);
+    border-radius: var(--run-radius-sm);
+    box-shadow: var(--run-shadow-code);
+    z-index: 100;
+}
+
+.pipeline-preview-info:hover .pipeline-preview-popup {
+    display: flex;
+}
+
+.pipeline-demo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pipeline-demo > i {
+    color: var(--muted);
+}
+
+.pipeline-tag {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: var(--accent-color);
+    color: var(--run-text-bright);
+    font-size: .85em;
+    font-weight: 600;
+}
+
 /* command preview (deprecated) */
 .run-preview {
     background: var(--run-bg-code);

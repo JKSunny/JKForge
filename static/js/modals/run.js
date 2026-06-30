@@ -83,6 +83,36 @@ async function saveRunPreset(save_as = false)
     select.value = preset_id
 }
 
+function renderPipelinePreviewStepDetails(step)
+{
+    let details = "";
+
+    if (step.type === "demo_queue") {
+        const demos = step.input?.demos ?? "all"
+
+        details = `
+            <div class="pipeline-preview-info">
+                <i class="fa-solid fa-list"></i>
+
+                <div class="pipeline-preview-popup">
+                    ${
+                        demos === "all"
+                            ? `<span class="pipeline-tag">All demos</span>`
+                            : demos.map(demo => `
+                                <div class="pipeline-demo">
+                                    <i class="fa-solid fa-clapperboard"></i>
+                                    <span>${demo}</span>
+                                </div>
+                            `).join("")
+                    }
+                </div>
+            </div>
+        `;
+    }
+
+    return details
+}
+
 function renderPipelinePreview() 
 {
     const preset_id = document.getElementById("runPipelinePreset").value
@@ -103,6 +133,8 @@ function renderPipelinePreview()
             <span class="pipeline-preview-step-type">
                 ${step.type}
             </span>
+
+            ${renderPipelinePreviewStepDetails(step)}
         </div>
 
         ${index < preset.steps.length - 1 ? `
