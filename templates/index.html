@@ -30,12 +30,14 @@
                     <div class="sidebar-label">JK Forge</div>
                     <h1>Environments</h1>
                 </div>
-                <button class="orange" onclick="open_config()">
-                    <i class="fa-solid fa-cogs"></i>
-                </button>
-                <button class="blue" onclick="openEnvironmentAddModal()">
-                    <i class="fa-solid fa-plus"></i> Add
-                </button>
+                <div class="actions">
+                    <button class="blue" onclick="openEnvironmentAddModal()">
+                        <i class="fa-solid fa-plus"></i> Add
+                    </button>
+                    <button class="orange" onclick="open_config()">
+                        <i class="fa-solid fa-cogs"></i>
+                    </button>
+                </div>
             </div>
 
             <div id="environment_list"></div>

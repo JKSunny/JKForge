@@ -135,6 +135,7 @@ class JKForge:
         # Environment lifecycle management.
         #
         # POST /environment_add
+        # POST /update_environment_alias
         # POST /set_default_run_preset
         # POST /delete
         #
@@ -146,6 +147,15 @@ class JKForge:
         # POST /build
         # POST /rebuild
         # -------------------------------------------------------------------------
+        @self.app.route("/update_environment_alias", methods=["POST"])
+        def update_environment_alias():
+            data = request.json or {}
+            env_id = data["environment"]
+            alias = data["alias"]
+            result = self.environment.update_environment_alias( env_id, alias )
+
+            return jsonify(result)
+        
         @self.app.route("/environment_add", methods=["POST"])
         def environment_add():
             """Create a new build environment."""
@@ -274,6 +284,8 @@ class JKForge:
         # -------------------------------------------------------------------------
         # Run API
         #
+        # POST /update_run_alias
+        #
         # Presets:
         # POST /get_run_presets
         # POST /save_run_preset
@@ -290,6 +302,16 @@ class JKForge:
         # POST /get_zone_snapshots
         # POST /get_fps_snapshots
         # -------------------------------------------------------------------------
+        @self.app.route("/update_run_alias", methods=["POST"])
+        def update_run_alias():
+            data = request.json or {}
+            env_id = data.get("environment")
+            run_id = data.get("run_id")
+            alias = data["alias"]
+            result = self.run.update_run_alias( env_id, run_id, alias )
+
+            return jsonify(result)
+        
         @self.app.route("/get_run_presets", methods=["POST"])
         def get_run_presets():
             """Return available run launcher presets."""

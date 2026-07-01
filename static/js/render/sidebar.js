@@ -60,7 +60,7 @@ function render_environment_sidebar(env)
                     event.preventDefault();
                     openEnvironmentDetaisModal('${env.id}');
                 ">
-                    ${env.id}
+                    ${env.alias ?? env.id}
                 </span>
 
                 <i class="fa-solid fa-chevron-down environment-chevron"></i>
@@ -85,7 +85,7 @@ function render_run_sidebar(env, run)
             <div class="run-list-top">
                 <div class="run-title">
                     ${run_status_icon(run.status)}
-                    <span>${run.id}</span>
+                    <span>${run.alias ?? run.id}</span>
                 </div>
 
                 <span>
@@ -124,7 +124,10 @@ function render_client_group(client, environments)
             >
 
             <label class="client-group-header" for="client-group-${client}">
-                <span>${client}</span>
+                <span>
+                    <i class="${client_meta?.frontend?.badge_icon ?? ""}"></i>
+                    ${client}
+                </span>
                 <span>${environments.length}</span>
             </label>
 

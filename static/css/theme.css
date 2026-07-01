@@ -16,7 +16,7 @@
     --panel-radius: 16px;
     --table-radius: 14px;
     /* sidebar */
-    --sidebar-bg: #0d1117;
+    --sidebar-bg: #242424;
     --sidebar-surface-1: #161b22;
     --sidebar-surface-2: #1c2128;
     --sidebar-surface-3: #21262d;
@@ -187,7 +187,7 @@
     --red: #cf222e;
     --yellow: #9a6700;
     /* sidebar */
-    --sidebar-bg: #f8fafc;
+    --sidebar-bg: #f1f1f1;
     --sidebar-surface-1: #ffffff;
     --sidebar-surface-2: #f4f6f9;
     --sidebar-surface-3: #eceff4;

@@ -296,6 +296,16 @@ class Environment:
             "dir": env_dir
         }
 
+    def update_environment_alias( self, env_id, alias):
+        metadata = self.read_metadata(env_id)
+        metadata["alias"] = alias
+
+        self.write_metadata(env_id, metadata)
+
+        return {
+            "success": True,
+        }
+
     def set_default_run_preset( self, env_id, preset_id ):
         metadata = self.read_metadata(env_id)
 
@@ -318,7 +328,8 @@ class Environment:
 
         # probably need to be a dataclass eventually.
         metadata = {
-            "id": env["id"],
+            "id"    : env["id"],
+            "alias" : env["id"],
 
             "client"    : conf["client"],
             "git"       : conf["git"],

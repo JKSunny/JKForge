@@ -66,6 +66,15 @@ class Run:
 
         return name
 
+    def update_run_alias( self, env_id, run_id, alias):
+        metadata = self.read_run_metadata(env_id, run_id)
+        metadata["alias"] = alias
+
+        self.write_run_metadata(env_id, run_id,metadata)
+        
+        return {
+            "success": True,
+        }
 
     # fps snapshots
     def get_fps_snapshots(self, env_id, run_id):

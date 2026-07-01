@@ -1,11 +1,14 @@
 button {
-    padding: .6em 1.15em;
+    padding: .6em;
     background: rgba(255,255,255,.03);
     border: 1px solid var(--line);
     color: var(--text);
     border-radius: 10px;
     cursor: pointer;
     transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
 }
 
 
@@ -140,7 +143,3 @@ button {
             background: rgba(121,192,255,.1);
             border-color: #79c0ff;
         }
-
-    button i {
-        margin-right: 6px;
-    }

@@ -10,9 +10,16 @@ async function openEnvironmentDetaisModal(envId)
     }
 
     selectedEnvironmentId = envId;
+
+    // socket
     socket_join_env_detail( envId )
 
+    // static
     render_environment_modal_layout()
+    
+    initialize_inline_editors()
+
+    // dynamic
     await init_env_console_history();
 
     document.getElementById("environmentDetailsModal").classList.remove("hidden")
@@ -244,7 +251,18 @@ function render_environment_modal_layout()
                 <div>
                     <div class="environment-modal-title">
                         <i class="fa-solid fa-cube"></i>
-                        ${env.id}
+
+                        <span class="details-env inline-editor">
+                            <span
+                                data-inline-edit="update_environment_alias"
+                                data-env-id="${env.id}">
+                                ${escape_html(env.alias ?? env.id)}
+                            </span>
+                            ${env.alias && env.alias !== env.id
+                                ? `<span class="details-env-original">${env.id}</span>`
+                                : ""
+                            }
+                        </span>
                     </div>
                 </div>
                 <button class="modal-close" onclick="closeEnvironmentDetaisModal()" aria-label="Close">&times;</button>

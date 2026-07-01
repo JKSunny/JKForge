@@ -72,6 +72,8 @@ async function select_run(env_id, run_id)
     render_qconsole_cmd_input()
     render_run_pipeline()
 
+    initialize_inline_editors()
+
     // dynamic
     await init_qconsole_history();
  
@@ -190,9 +192,33 @@ function render_run_layout()
 
     details.innerHTML = `
         <div class="details-header">
-            <div>
-                <div class="details-env">${env.id}</div>
-                <h2>${run.id}</h2>
+            <div class="details-title">
+                <span class="details-env inline-editor">
+                    <span
+                        data-inline-edit="update_environment_alias"
+                        data-env-id="${env.id}">
+                        ${escape_html(env.alias ?? env.id)}
+                    </span>
+                    ${env.alias && env.alias !== env.id
+                        ? `<span class="details-env-original">${env.id}</span>`
+                        : ""
+                    }
+                </span>
+
+                <span class="details-run inline-editor">
+                    <span
+                        class="details-run-name"
+                        data-inline-edit="update_run_alias"
+                        data-env-id="${env.id}"
+                        data-run-id="${run.id}">
+                        ${escape_html(run.alias ?? run.id)}
+                    </span>
+                    ${run.alias && run.alias !== run.id
+                        ? `<span class="details-run-original">${run.id}</span>`
+                        : ""
+                    }
+
+                </span>
             </div>
 
             <div id="runDetailActions" class="details-actions"></div>
